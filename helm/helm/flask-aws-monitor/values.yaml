@@ -1,0 +1,36 @@
+replicaCount: 2
+
+image:
+  repository: your-dockerhub-username/flask-aws-monitor
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer     # or ClusterIP / NodePort, depending on your cluster
+  port: 5001
+  targetPort: 5001
+  nodePort: null         # e.g. 30080 if you choose NodePort
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: flask-monitor.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+awsEnv:
+  aws_access_key_id: ""
+  aws_secret_access_key: ""
+  aws_region: "eu-central-1"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
